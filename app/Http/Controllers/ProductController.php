@@ -43,7 +43,7 @@ class ProductController extends Controller
         //insert single image
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $fileName = time() . '_' . $image->getClientOriginalName();
+            $fileName = $image->getClientOriginalName();
             $image->storeAs('', $fileName, 'public');
             $filePath = 'uploads/' . $fileName;
             $product->image = $filePath;
@@ -70,7 +70,7 @@ class ProductController extends Controller
         // insert images
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $fileName = time() . '_' . $image->getClientOriginalName();
+                $fileName = $image->getClientOriginalName();
                 $image->storeAs('', $fileName, 'public');
                 $filePath = 'uploads/' . $fileName;
                 ProductImage::create([
@@ -105,17 +105,16 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductStoreRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         //
         $product = Product::findOrFail($id);
-
         if ($request->hasFile('image')) {
             //delete prev image
             File::delete(public_path($product->image));
 
             $image = $request->file('image');
-            $filename = time() . '_' . $image->getClientOriginalName();
+            $filename = $image->getClientOriginalName();
             $image->storeAs('', $filename, 'public');
             $filePath = 'uploads/' . $filename;
             $product->image = $filePath;
@@ -130,9 +129,10 @@ class ProductController extends Controller
         $product->update();
 
         //update colors
-        if ($request->has('colors') && $request->filled('colors')) {
+        if ($request->hasFile('colors') && $request->filled('colors')) {
+            $product->colors()->delete();
             foreach ($request->colors as $color) {
-                (new \App\Models\ProductColor)->update([
+                ProductColor::create([
                     'product_id' => $product->id,
                     'name' => $color,
                 ]);
@@ -141,12 +141,14 @@ class ProductController extends Controller
 
         //update images
         if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                File::delete(public_path($image->path));
+            //delete perv images in folders
+            foreach ($product->images as $image) {
+                $fileName = $image->path;
+                File::delete(public_path($fileName));
             }
-//            $product->images()->delete();
+            $product->images()->delete();
             foreach ($request->file('images') as $image) {
-                $fileName = time() . '_' . $image->getClientOriginalName();
+                $fileName = $image->getClientOriginalName();
                 $image->storeAs('', $fileName, 'public');
                 $filePath = 'uploads/' . $fileName;
                 ProductImage::create([

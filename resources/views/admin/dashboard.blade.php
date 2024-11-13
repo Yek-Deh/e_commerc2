@@ -29,9 +29,13 @@
                                 <td>{{$product->name}}</td>
                                 <td>{{$product->price}}</td>
                                 <td>{{$product->quantity}}</td>
-                                <td>
+                                <td class="d-flex justify-content-around">
                                     <a href="{{route('product.edit',$product->id)}}" class="btn btn-outline-primary">Edit</a>
-                                    <a href="" class="btn btn-outline-danger">Delete</a>
+                                    <form action="{{route('product.destroy',$product->id)}}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-outline-danger" >Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
