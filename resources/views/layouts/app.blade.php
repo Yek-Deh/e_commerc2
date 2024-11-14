@@ -9,6 +9,10 @@
     <link rel="icon" type="image/png" href="{{asset('assets/images/favicon.png')}}">
     <link rel="stylesheet" href="{{asset('assets/css/all.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/slick.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/select2.min.css')}}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
     <link rel="stylesheet" href="{{asset('assets/css/spacing.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
@@ -53,11 +57,23 @@
 <!--font-awesome js-->
 <script src="{{asset('assets/js/Font-Awesome.js')}}"></script>
 
+<script src="{{asset('assets/js/slick.min.js')}}"></script>
+<script src="{{asset('assets/js/select2.min.js')}}"></script>
 <!--plugins-->
 <script src="{{asset('assets/js/tinymce/tinymce.min.js')}}"></script>
 
 <!--main/custom js-->
 <script src="{{asset('assets/js/main.js')}}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<script>
+    var notyf=new Notyf({
+        duration: 1700,
+        position: {
+            x: 'center',
+            y: 'top',
+        }});
+</script>
 
 @stack('scripts')
 </body>
